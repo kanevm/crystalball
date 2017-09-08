@@ -4,4 +4,6 @@ public interface FootballDataPollingService {
 
 	void scheduleFixedDelayDataPolling();
 
+	void schedulePredictionsEvaluation();
+
 }

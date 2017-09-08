@@ -11,6 +11,14 @@
 	<div class="row">
 		<div class="col-md-12">
 			<strong>
+				Game id: 
+				${game.id}
+			</strong>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<strong>
 				Competition: 
 				${competition.caption} - Round ${game.competitionMatchday}
 			</strong>

@@ -4,10 +4,14 @@ import java.util.List;
 
 import org.football.persistance.competition.Competition;
 import org.football.persistance.fixture.Fixture;
+import org.football.persistance.fixture.Status;
 import org.football.persistance.leaguetable.Standing;
+import org.football.persistance.prediction.Prediction;
 import org.football.repository.CompetitionRepository;
+import org.football.repository.PredictionRepository;
 import org.football.restapi.polling.FootballDataPollingService;
 import org.football.restapi.service.FootballOperations;
+import org.football.service.PredictionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -15,7 +19,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class FootballDataPollingServiceImpl implements FootballDataPollingService {
 	
-	private static final int THIRTY_SECONDS = 30_000;
+	private static final int ONE_SECONDS = 1_000;
+	private static final int THIRTY_SECONDS = 30 * ONE_SECONDS;
+	private static final int ONE_MINUTE = 2 * THIRTY_SECONDS;
 	
 	@Autowired
 	private FootballOperations footballOperations;
@@ -23,11 +29,22 @@ public class FootballDataPollingServiceImpl implements FootballDataPollingServic
 	private List<String> supportedCompetitionIds;
 	@Autowired
 	private CompetitionRepository competitionRepository;
+	@Autowired
+	private PredictionRepository predictionRepository;
+	@Autowired
+	private PredictionService predictionService;
 
 	@Override
-	@Scheduled(fixedDelay = THIRTY_SECONDS)
+	@Scheduled(fixedDelay = ONE_MINUTE)
 	public void scheduleFixedDelayDataPolling() {
 		supportedCompetitionIds.forEach(this::pollCompetitionDetails);
+	}
+	
+	@Override
+	@Scheduled(fixedDelay = ONE_MINUTE)
+	public void schedulePredictionsEvaluation() {
+		final List<Prediction> unevaluatedPredictions = predictionRepository.findByPointsAndFixtureStatus(null, Status.FINISHED);
+		unevaluatedPredictions.forEach(predictionService::evaluatePrediction);
 	}
 
 	private void pollCompetitionDetails(final String competitionId) {

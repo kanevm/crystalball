@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.football.form.PredictionFormEntry;
+import org.football.persistance.fixture.Fixture;
+import org.football.persistance.fixture.Status;
 import org.football.persistance.game.Game;
 import org.football.persistance.prediction.Prediction;
 import org.football.persistance.user.User;
@@ -31,27 +33,52 @@ public class PredictionServiceImpl implements PredictionService {
 	private FixtureRepository fixtureRepository;
 
 	@Override
-	public Prediction createPrediction(Prediction prediction) {
-		// TODO Auto-generated method stub
-		return null;
+	public Prediction evaluatePrediction(final Prediction prediction) {
+		final Fixture fixture = prediction.getFixture();
+		final Short actualGoalsHomeTeam = fixture.getGoalsHomeTeam();
+		final Short actualGoalsAwayTeam = fixture.getGoalsAwayTeam();
+		
+		if (fixture.getStatus() != Status.FINISHED || actualGoalsHomeTeam == null
+				|| actualGoalsAwayTeam == null) {
+			throw new IllegalStateException("Unable to evaluate prediction with id " + prediction.getId()
+					+ " for fixture with id " + fixture.getId());
+		}
+		
+		final Short predictedGoalsHomeTeam = prediction.getGoalsHomeTeam();
+		final Short predictedGoalsAwayTeam = prediction.getGoalsAwayTeam();
+		
+		final Short points = evaluate(actualGoalsHomeTeam, actualGoalsAwayTeam, predictedGoalsHomeTeam, predictedGoalsAwayTeam);
+		prediction.setPoints(points);
+		
+		return predictionRepository.save(prediction);
 	}
 
-	@Override
-	public Prediction evaluatePrediction(Prediction prediction) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Prediction alterPrediction(Prediction prediction) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void deletePrediction(Prediction prediction) {
-		// TODO Auto-generated method stub
-
+	protected Short evaluate(final Short actualGoalsHomeTeam, final Short actualGoalsAwayTeam,
+			final Short predictedGoalsHomeTeam, final Short predictedGoalsAwayTeam) {
+		// Correct score
+		if (actualGoalsHomeTeam.equals(predictedGoalsHomeTeam) && actualGoalsAwayTeam.equals(predictedGoalsAwayTeam)) {
+			return 4;
+		}
+		
+		// Draw
+		final int actualGoalDifference = actualGoalsHomeTeam - actualGoalsAwayTeam;
+		final int predictedGoalDifference = predictedGoalsHomeTeam - predictedGoalsAwayTeam;
+		if (actualGoalDifference == 0 && predictedGoalDifference == 0) {
+			return 3;
+		}
+		
+		// Goal difference
+		if (actualGoalDifference == predictedGoalDifference) {
+			return 2;
+		}
+		
+		// Winner
+		final int multipliedGoalDifference = actualGoalDifference * predictedGoalDifference;
+		if (multipliedGoalDifference > 0) {
+			return 1;
+		}
+		
+		return 0;
 	}
 
 	@Override
