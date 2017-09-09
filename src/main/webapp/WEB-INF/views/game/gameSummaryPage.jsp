@@ -1,4 +1,4 @@
-<%@ page trimDirectiveWhitespaces="true" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
@@ -13,30 +13,31 @@
 			<div class="row">
 				<div class="col-md-12">
 					<strong>
-						Game id: 
-						${game.id}
+						<spring:message code="text.gamepage.gameId" arguments="${game.id}"/>
 					</strong>
 				</div>
 			</div>
 			<div class="row">
 				<div class="col-md-12">
 					<strong>
-						Competition: 
-						${competition.caption} - Round ${game.competitionMatchday}
+						<spring:message code="text.gamepage.competition" arguments="${game.competitionCaption},${game.competitionMatchday}"/>
 					</strong>
 				</div>
 			</div>
 			<div class="row">
 				<div class="col-md-12">
 					<strong>
-						Started on: 
-						<fmt:formatDate type="date" dateStyle="medium" timeStyle="short" value="${game.startedTime}" />
+						<fmt:formatDate pattern="dd.MM.yyyy HH:mm" value="${game.startedTime}" var="startedTime" />
+						<spring:message code="text.gamepage.startedOn" arguments="${startedTime}"/>
 					</strong>
 				</div>
 			</div>
 			<div class="row">
 				<div class="col-md-12">
-					<strong>Status: ${game.gameStatus}</strong>
+					<strong>
+						<spring:message code="text.gamepage.game.status.${game.gameStatus}" var="gameStatus"/>
+						<spring:message code="text.gamepage.status" arguments="${gameStatus}"/>
+					</strong>
 				</div>
 			</div>
 		</div>
@@ -48,7 +49,7 @@
 					<c:set var="points" value="${userPoint.value }" />
 					<tr>
 						<td>${user.name} (${user.email})</td>
-						<td>${points} points</td>
+						<td><spring:message code="text.gamepage.points" arguments="${points}"/></td>
 					</tr>
 					</c:forEach>
 				</tbody>
@@ -65,11 +66,11 @@
 			<table class="table table-striped">
 				<thead>
 					<tr>
-						<th>Fixture</th>
-						<th>Result</th>
+						<th><spring:message code="text.gamepage.fixture" /></th>
+						<th><spring:message code="text.gamepage.result" /></th>
 						<c:forEach items="${userPredictions}" var="userPredction">
-							<c:set var="user" value="${userPredction.key }" />
-							<th>${user.name}'s prediction</th>
+							<c:set var="user" value="${userPredction.key}" />
+							<th><spring:message code="text.gamepage.predictionOf" arguments="${user.name}"/></th>
 						</c:forEach>
 					</tr>
 				</thead>

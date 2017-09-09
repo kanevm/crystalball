@@ -9,37 +9,30 @@
 		<div class="col-md-6">
 			<c:if test="${param.error ne null}">
 				<div class="alert alert-danger" role="alert">
-					Invalid username and password.
+					<spring:message code="text.loginpage.invalidUsernameOrPassword" />
 				</div>
 			</c:if>
 			<c:if test="${param.logout ne null}">
 				<div class="alert alert-info" role="alert">
-					You have been logged out.
+					<spring:message code="text.loginpage.loggedOut" />
 				</div>
 			</c:if>
 			<c:url var="loginUrl" value="/login"/>
 			<form role="form" action="${loginUrl }" method="post">
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 			    <div class="form-group">
-			        <label for="email">Email address</label>
+			        <label for="email"><spring:message code="text.loginpage.email" /></label>
 			        <input class="form-control" type="email" name="email" id="email" required autofocus>
 			    </div>
 			    <div class="form-group">
-			        <label for="password">Password</label>
+			        <label for="password"><spring:message code="text.loginpage.password" /></label>
 			        <input class="form-control" type="password" name="password" id="password" required>
 			    </div>
-			    <button class="btn btn-default btn-primary" type="submit">Sign in</button>
+			    <button class="btn btn-default btn-primary" type="submit"><spring:message code="text.loginpage.signIn" /></button>
 			</form>
 		</div>
 		<div class="col-md-6">
-			"Lorem ipsum dolor sit amet, consectetur
-			adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-			magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-			ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-			irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-			fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-			proident, sunt in culpa qui officia deserunt mollit anim id est
-			laborum."
+			<spring:message code="text.loginpage.info" />
 		</div>
 	</div>
 </template:page>

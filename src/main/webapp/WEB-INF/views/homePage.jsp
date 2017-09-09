@@ -9,14 +9,11 @@
 <template:page pageTitle="${pageTitle}">
 	<div class="row">
 		<div class="col-md-6">
-			<a href="<c:url value="/game/start" />" class="btn btn-primary" role="button">Start a game</a>
-			<a href="<c:url value="/games" />" class="btn btn-primary" role="button">Display started games</a>
+			<a href="<c:url value="/game/start" />" class="btn btn-primary" role="button"><spring:message code="text.header.startGame" /></a>
+			<a href="<c:url value="/games" />" class="btn btn-primary" role="button"><spring:message code="text.header.games" /></a>
 		</div>
 		<div class="col-md-6">
-			Lorem Ipsum is simply dummy text of the printing and
-			typesetting industry. Lorem Ipsum has been the industry's standard
-			dummy text ever since the 1500s, when an unknown printer took a
-			galley.
+			<spring:message code="text.homepage.info" />
 		</div>
 	</div>
 	<div class="row">&nbsp;</div>
@@ -29,23 +26,24 @@
 				<table class="table table-striped">
 					<thead>
 						<tr>
-							<th>Date</th>
-							<th>Round</th>
-							<th>Fixture</th>
-							<th>Result</th>
+							<th><spring:message code="text.homepage.fixture.date" /></th>
+							<th><spring:message code="text.homepage.fixture.round" /></th>
+							<th><spring:message code="text.homepage.fixture.caption" /></th>
+							<th><spring:message code="text.homepage.fixture.result" /></th>
 						</tr>
 					</thead>
 					<tbody>
 						<c:forEach items="${competition.fixtures}" var="fixture">
 						<tr>
-							<td><fmt:formatDate pattern="dd.MM HH:mm" value="${fixture.date }" /></td>
+							<td><fmt:formatDate pattern="dd.MM HH:mm" value="${fixture.date}" /></td>
 							<td>${fixture.matchday}</td>
 							<td>
-								${fixture.homeTeamName } vs. ${fixture.awayTeamName }&nbsp;
+								${fixture.homeTeamName } vs. ${fixture.awayTeamName }
 							</td>
 							<td>
 								<c:if test="${not empty fixture.goalsHomeTeam and not empty fixture.goalsAwayTeam}">
-									${fixture.status }&nbsp;${fixture.goalsHomeTeam }:${fixture.goalsAwayTeam }
+									<spring:message code="text.gamepage.fixture.status.${fixture.status}" />
+									&nbsp;${fixture.goalsHomeTeam }:${fixture.goalsAwayTeam }
 								</c:if>
 							</td>
 						</tr>
