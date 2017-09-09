@@ -31,8 +31,8 @@
 				<c:forEach items="${users}" var="user">
 					<div class="checkbox">
 						<label>
-							<form:checkbox path="userIds" value="${user}" />
-							${user}
+							<form:checkbox path="userIds" value="${user.email}" />
+							${user.name} (${user.email})
 						</label>
 					</div>
 				</c:forEach>

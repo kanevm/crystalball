@@ -9,7 +9,11 @@ import org.football.persistance.user.User;
 public interface GameService {
 
 	Game startGame(GameForm gameForm);
+	
+	Game endGame(Game game);
 
+	Game tryEndGame(Game game);
+	
 	List<Game> getGamesForUser(User user);
 
 	List<Game> getGamesForCurrentUser();

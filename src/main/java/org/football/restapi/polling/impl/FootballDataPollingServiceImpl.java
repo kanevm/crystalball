@@ -5,12 +5,16 @@ import java.util.List;
 import org.football.persistance.competition.Competition;
 import org.football.persistance.fixture.Fixture;
 import org.football.persistance.fixture.Status;
+import org.football.persistance.game.Game;
+import org.football.persistance.game.GameStatus;
 import org.football.persistance.leaguetable.Standing;
 import org.football.persistance.prediction.Prediction;
 import org.football.repository.CompetitionRepository;
+import org.football.repository.GameRepository;
 import org.football.repository.PredictionRepository;
 import org.football.restapi.polling.FootballDataPollingService;
 import org.football.restapi.service.FootballOperations;
+import org.football.service.GameService;
 import org.football.service.PredictionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -33,10 +37,14 @@ public class FootballDataPollingServiceImpl implements FootballDataPollingServic
 	private PredictionRepository predictionRepository;
 	@Autowired
 	private PredictionService predictionService;
+	@Autowired
+	private GameRepository gameRepository;
+	@Autowired
+	private GameService gameService;
 
 	@Override
 	@Scheduled(fixedDelay = ONE_MINUTE)
-	public void scheduleFixedDelayDataPolling() {
+	public void scheduleFootballDataPolling() {
 		supportedCompetitionIds.forEach(this::pollCompetitionDetails);
 	}
 	
@@ -45,8 +53,11 @@ public class FootballDataPollingServiceImpl implements FootballDataPollingServic
 	public void schedulePredictionsEvaluation() {
 		final List<Prediction> unevaluatedPredictions = predictionRepository.findByPointsAndFixtureStatus(null, Status.FINISHED);
 		unevaluatedPredictions.forEach(predictionService::evaluatePrediction);
+		
+		final List<Game> inProgressGames = gameRepository.findByGameStatus(GameStatus.IN_PROGRESS);
+		inProgressGames.forEach(gameService::tryEndGame);
 	}
-
+	
 	private void pollCompetitionDetails(final String competitionId) {
 		final Long competitionIdAsLong = Long.valueOf(competitionId);
 		final Competition competition = footballOperations.getCompetition(competitionIdAsLong);

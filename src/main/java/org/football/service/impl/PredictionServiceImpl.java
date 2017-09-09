@@ -50,11 +50,23 @@ public class PredictionServiceImpl implements PredictionService {
 		final Short points = evaluate(actualGoalsHomeTeam, actualGoalsAwayTeam, predictedGoalsHomeTeam, predictedGoalsAwayTeam);
 		prediction.setPoints(points);
 		
+		System.out.println("actualGoalsHomeTeam" + actualGoalsHomeTeam);
+		System.out.println("actualGoalsAwayTeam" + actualGoalsAwayTeam);
+		System.out.println("predictedGoalsHomeTeam" + predictedGoalsHomeTeam);
+		System.out.println("predictedGoalsAwayTeam" + predictedGoalsAwayTeam);
+		System.out.println("points" + points);
+		
 		return predictionRepository.save(prediction);
 	}
 
 	protected Short evaluate(final Short actualGoalsHomeTeam, final Short actualGoalsAwayTeam,
 			final Short predictedGoalsHomeTeam, final Short predictedGoalsAwayTeam) {
+		
+		// Fixture started before the user could make a prediction
+		if (predictedGoalsHomeTeam == null || predictedGoalsAwayTeam == null) {
+			return 0;
+		}
+		
 		// Correct score
 		if (actualGoalsHomeTeam.equals(predictedGoalsHomeTeam) && actualGoalsAwayTeam.equals(predictedGoalsAwayTeam)) {
 			return 4;

@@ -56,11 +56,11 @@ public class Prediction {
 		this.game = game;
 	}
 
-	public short getPoints() {
+	public Short getPoints() {
 		return points;
 	}
 
-	public void setPoints(final short points) {
+	public void setPoints(final Short points) {
 		this.points = points;
 	}
 

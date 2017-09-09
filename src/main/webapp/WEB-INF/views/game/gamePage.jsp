@@ -28,7 +28,7 @@
 		<div class="col-md-12">
 			<strong>
 				Started on: 
-				<fmt:formatDate type="date" dateStyle="medium" timeStyle="short" value="${game.startedTime}" />
+				<fmt:formatDate pattern="dd.MM HH:mm" value="${game.startedTime}" />
 			</strong>
 		</div>
 	</div>
@@ -37,7 +37,7 @@
 			<strong>
 				Players: 
 				<c:forEach items="${game.users}" var="user" varStatus="counter">
-					${user.email}
+					${user.name} (${user.email})
 					<c:if test="${counter.count != game.users.size()}">
 					 VS 
 					</c:if>
@@ -66,10 +66,13 @@
 					<form:input value="${currentUser.id}" path="predictions[${index }].userId" type="hidden" required="required"/>
 					<div class="row top10">
 						<div class="col-md-3 col-sm-3 col-xs-3">
-							<fmt:formatDate type="both" dateStyle="medium" timeStyle="short" value="${fixture.date}" />
+							<fmt:formatDate pattern="dd.MM HH:mm" value="${fixture.date}" />
 						</div>
 						<div class="col-md-5 col-sm-5 col-xs-5">
-							${fixture.homeTeamName} vs. ${fixture.awayTeamName}
+							${fixture.homeTeamName} vs. ${fixture.awayTeamName}&nbsp;
+							<c:if test="${not empty fixture.goalsHomeTeam and not empty fixture.goalsAwayTeam}">
+								<strong>${fixture.status }&nbsp;${fixture.goalsHomeTeam }:${fixture.goalsAwayTeam }</strong>
+							</c:if>
 						</div>
 						<div class="col-md-2 col-sm-2 col-xs-2">
 							<form:errors path="predictions[${index }].goalsHomeTeam" cssClass="alert alert-danger" element="div"/>
@@ -81,7 +84,9 @@
 						</div>
 					</div>
 				</c:forEach>
-				<form:button type="submit" class="btn btn-default btn-primary">Place form</form:button>
+				<c:if test="${game.gameStatus != 'FINISHED'}">
+					<form:button type="submit" class="btn btn-default btn-primary">Place form</form:button>
+				</c:if>
 			</form:form>
 		</div>
 		<div class="col-md-6">

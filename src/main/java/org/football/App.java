@@ -5,10 +5,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 
 import org.football.service.UserService;
 import org.football.form.RegisterForm;
+import org.football.persistance.competition.Competition;
+import org.football.persistance.fixture.Status;
 import org.football.persistance.user.User;
+import org.football.repository.CompetitionRepository;
+import org.football.repository.FixtureRepository;
 import org.football.restapi.service.FootballOperations;
 import org.football.restapi.service.impl.FootballOperationsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +40,11 @@ public class App implements CommandLineRunner {
 
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private CompetitionRepository competitionRepository;
+	@Autowired
+	private FixtureRepository fixtureRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(App.class, args);
@@ -78,6 +88,24 @@ public class App implements CommandLineRunner {
 			userService.create(form);
 			System.out.println("joro created");
 		}
+//		Random rand = new Random();
+//		final Competition competition = competitionRepository.findOne(452L);
+//		competition.getFixtures().forEach(fixture -> {
+//			fixture.setStatus(Status.FINISHED);
+//			fixture.setGoalsHomeTeam((short)rand.nextInt(3));
+//			fixture.setGoalsAwayTeam((short)rand.nextInt(3));
+//			
+//			fixtureRepository.save(fixture);
+//		});
+//		
+//		final Competition competition2 = competitionRepository.findOne(445L);
+//		competition2.getFixtures().forEach(fixture -> {
+//			fixture.setStatus(Status.FINISHED);
+//			fixture.setGoalsHomeTeam((short)rand.nextInt(3));
+//			fixture.setGoalsAwayTeam((short)rand.nextInt(3));
+//			
+//			fixtureRepository.save(fixture);
+//		});
 	}
 
 	@Bean

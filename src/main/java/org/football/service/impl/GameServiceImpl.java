@@ -7,11 +7,13 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.football.form.GameForm;
 import org.football.persistance.competition.Competition;
 import org.football.persistance.game.Game;
 import org.football.persistance.game.GameStatus;
 import org.football.persistance.game.GameType;
+import org.football.persistance.prediction.Prediction;
 import org.football.persistance.user.User;
 import org.football.repository.CompetitionRepository;
 import org.football.repository.GameRepository;
@@ -52,6 +54,26 @@ public class GameServiceImpl implements GameService {
 		game.setStartedTime(new Date());
 
 		return gameRepository.saveAndFlush(game);
+	}
+	
+	@Override
+	public Game endGame(Game game) {
+		game.setGameStatus(GameStatus.FINISHED);
+		
+		return gameRepository.saveAndFlush(game);
+	}
+	
+	@Override
+	public Game tryEndGame(final Game game) {
+		final List<Prediction> predictions = game.getPredictions();
+		if (CollectionUtils.isNotEmpty(predictions) && predictions.stream()
+				.allMatch(prediction -> prediction.getPoints() != null)) {
+			game.setGameStatus(GameStatus.FINISHED);
+			
+			return gameRepository.saveAndFlush(game);
+		}
+		
+		return game;
 	}
 
 	@Override

@@ -1,11 +1,32 @@
 package org.football.controller;
 
-import static org.football.controller.ControllerAttributeConstants.*;
-import static org.football.controller.ControllerViewConstants.*;
-import static org.football.controller.ControllerUrlConstants.*;
+import static org.football.controller.ControllerAttributeConstants.COMPETITIONS_ATTR;
+import static org.football.controller.ControllerAttributeConstants.COMPETITION_ATTR;
+import static org.football.controller.ControllerAttributeConstants.FIXTURES_ATTR;
+import static org.football.controller.ControllerAttributeConstants.GAMES_ATTR;
+import static org.football.controller.ControllerAttributeConstants.GAME_ATTR;
+import static org.football.controller.ControllerAttributeConstants.GAME_FORM_ATTR;
+import static org.football.controller.ControllerAttributeConstants.PREDICTION_FORM_ATTR;
+import static org.football.controller.ControllerAttributeConstants.USERS_ATTR;
+import static org.football.controller.ControllerAttributeConstants.USER_POINTS_ATTR;
+import static org.football.controller.ControllerAttributeConstants.USER_PREDICTIONS_ATTR;
+import static org.football.controller.ControllerUrlConstants.GAMES_URL;
+import static org.football.controller.ControllerUrlConstants.GAME_URL;
+import static org.football.controller.ControllerUrlConstants.PREDICT_GAME_URL;
+import static org.football.controller.ControllerUrlConstants.START_GAME_URL;
+import static org.football.controller.ControllerUrlConstants.SUMMARY_URL;
+import static org.football.controller.ControllerViewConstants.GamePage;
+import static org.football.controller.ControllerViewConstants.GameSummaryPage;
+import static org.football.controller.ControllerViewConstants.GamesPage;
+import static org.football.controller.ControllerViewConstants.StartGamePage;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -18,6 +39,7 @@ import org.football.persistance.competition.Competition;
 import org.football.persistance.fixture.Fixture;
 import org.football.persistance.game.Game;
 import org.football.persistance.prediction.Prediction;
+import org.football.persistance.user.User;
 import org.football.repository.CompetitionRepository;
 import org.football.repository.FixtureRepository;
 import org.football.service.GameService;
@@ -77,6 +99,34 @@ public class GameController extends AbstractController {
 		
 		return GamePage;
 	}
+	
+	@GetMapping(GAME_URL + "/{id}" + SUMMARY_URL)
+	public String getGameSummaryPage(final Model model, @PathVariable final long id) {
+		final Game game = gameService.getGame(id);
+		final Competition competition = competitionRepository.findOne(game.getCompetitionId());
+		
+		final Map<User, List<Prediction>> userPreditions = new HashMap<>();
+		final Map<User, Integer> userPoints = new HashMap<>();
+		game.getUsers().forEach(user -> {
+			final List<Prediction> predictions = predictionService.getPredictions(game, user);
+			userPreditions.put(user, predictions);
+			
+			final Integer points = predictions.stream()
+					.map(Prediction::getPoints)
+					.mapToInt(x -> x)
+					.sum();
+			userPoints.put(user, points);
+		});
+		
+		final Map<User, Integer> sortedUserPoints = sortByValue(userPoints);
+		
+		model.addAttribute(GAME_ATTR, game);
+		model.addAttribute(COMPETITION_ATTR, competition);
+		model.addAttribute(USER_PREDICTIONS_ATTR, userPreditions);
+		model.addAttribute(USER_POINTS_ATTR, sortedUserPoints);
+		
+		return GameSummaryPage;
+	}
 
 	@PostMapping(PREDICT_GAME_URL)
 	public String handlePredictions(@Valid @ModelAttribute(PREDICTION_FORM_ATTR) final PredictionForm predictionForm,
@@ -103,8 +153,7 @@ public class GameController extends AbstractController {
 
 		model.addAttribute(USERS_ATTR,
 				userService.getAllUsers().stream()
-						.map(user -> user.getEmail())
-						.filter(email -> !email.equalsIgnoreCase(getCurrentUser().getEmail()))
+						.filter(user -> !user.equals(getCurrentUser()))
 						.collect(Collectors.toList()));
 
 		model.addAttribute(GAME_FORM_ATTR, gameForm);
@@ -143,5 +192,15 @@ public class GameController extends AbstractController {
 		predictionForm.setPredictions(predictionEntries);
 
 		return predictionForm;
+	}
+
+	public static <K, V extends Comparable<? super V>> Map<K, V> sortByValue(final Map<K, V> map) {
+		final List<Map.Entry<K, V>> list = new LinkedList<Map.Entry<K, V>>(map.entrySet());
+		Collections.sort(list, (o1, o2) -> (o2.getValue()).compareTo(o1.getValue()));
+
+		final Map<K, V> result = new LinkedHashMap<K, V>();
+		list.forEach(entry -> result.put(entry.getKey(), entry.getValue()));
+
+		return result;
 	}
 }

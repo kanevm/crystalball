@@ -14,6 +14,8 @@ public interface ControllerAttributeConstants {
 	String USER_ATTR = "user";
 	String USERS_ATTR = "users";
 	String CURRENT_USER_ATTR = "currentUser";
+	String USER_PREDICTIONS_ATTR = "userPredictions";
+	String USER_POINTS_ATTR = "userPoints";
 	String ERROR_ATTR = "error";
 	String TIME_ATTR = "time";
 }
