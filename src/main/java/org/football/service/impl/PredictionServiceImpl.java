@@ -50,11 +50,12 @@ public class PredictionServiceImpl implements PredictionService {
 		final Short points = evaluate(actualGoalsHomeTeam, actualGoalsAwayTeam, predictedGoalsHomeTeam, predictedGoalsAwayTeam);
 		prediction.setPoints(points);
 		
-		System.out.println("actualGoalsHomeTeam" + actualGoalsHomeTeam);
-		System.out.println("actualGoalsAwayTeam" + actualGoalsAwayTeam);
-		System.out.println("predictedGoalsHomeTeam" + predictedGoalsHomeTeam);
-		System.out.println("predictedGoalsAwayTeam" + predictedGoalsAwayTeam);
-		System.out.println("points" + points);
+		return predictionRepository.save(prediction);
+	}
+	
+	@Override
+	public Prediction evaluatePrediction(final Prediction prediction, final Short points) {
+		prediction.setPoints(points);
 		
 		return predictionRepository.save(prediction);
 	}

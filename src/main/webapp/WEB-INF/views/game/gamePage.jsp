@@ -71,9 +71,9 @@
 						</div>
 						<div class="col-md-5 col-sm-5 col-xs-5">
 							${fixture.homeTeamName} vs. ${fixture.awayTeamName}&nbsp;
+							<strong><spring:message code="text.gamepage.fixture.status.${fixture.status}" /></strong>
 							<c:if test="${not empty fixture.goalsHomeTeam and not empty fixture.goalsAwayTeam}">
 								<strong>
-									<spring:message code="text.gamepage.fixture.status.${fixture.status}" />
 									&nbsp;${fixture.goalsHomeTeam }:${fixture.goalsAwayTeam }
 								</strong>
 							</c:if>

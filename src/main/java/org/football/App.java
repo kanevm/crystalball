@@ -5,17 +5,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Random;
 
-import org.football.service.UserService;
 import org.football.form.RegisterForm;
-import org.football.persistance.competition.Competition;
-import org.football.persistance.fixture.Status;
 import org.football.persistance.user.User;
 import org.football.repository.CompetitionRepository;
 import org.football.repository.FixtureRepository;
 import org.football.restapi.service.FootballOperations;
 import org.football.restapi.service.impl.FootballOperationsImpl;
+import org.football.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
@@ -57,7 +54,7 @@ public class App implements CommandLineRunner {
 		if (!kani.isPresent()) {
 			final RegisterForm form = new RegisterForm();
 			form.setEmail("kani@abv.bg");
-			form.setName("Kani Kanev");
+			form.setName("Kani");
 			form.setPassword("123123");
 			form.setPasswordRepeated("123123");
 
@@ -69,7 +66,7 @@ public class App implements CommandLineRunner {
 		if (!mkanev.isPresent()) {
 			final RegisterForm form = new RegisterForm();
 			form.setEmail("mkanev_@abv.bg");
-			form.setName("Martin Kanev");
+			form.setName("Martin");
 			form.setPassword("123123");
 			form.setPasswordRepeated("123123");
 
@@ -81,7 +78,7 @@ public class App implements CommandLineRunner {
 		if (!joro.isPresent()) {
 			final RegisterForm form = new RegisterForm();
 			form.setEmail("joro@abv.bg");
-			form.setName("Joro Jorkata");
+			form.setName("Joro");
 			form.setPassword("123123");
 			form.setPasswordRepeated("123123");
 

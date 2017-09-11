@@ -11,6 +11,8 @@ public interface PredictionService {
 
 	Prediction evaluatePrediction(Prediction prediction);
 
+	Prediction evaluatePrediction(Prediction prediction, Short points);
+	
 	List<Prediction> createPredictions(List<PredictionFormEntry> predictionEntries);
 
 	List<Prediction> getPredictions(Game game, User user);

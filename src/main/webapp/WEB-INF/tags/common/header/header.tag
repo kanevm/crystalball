@@ -39,6 +39,7 @@
 				<ul class="dropdown-menu">
 					<li><a href="<c:url value="/game/start" />"><spring:message code="text.header.startGame" /></a></li>
 					<li><a href="<c:url value="/games" />"><spring:message code="text.header.games" /></a></li>
+					<li><a href="<c:url value="/games/stats" />"><spring:message code="text.header.gamesStats" /></a></li>
 					<li role="separator" class="divider"></li>
 					<li><a href="<c:url value="/logout" />"><spring:message code="text.header.logout" /></a></li>
 				</ul>

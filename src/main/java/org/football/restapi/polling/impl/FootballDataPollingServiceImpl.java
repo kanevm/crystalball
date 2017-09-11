@@ -53,6 +53,8 @@ public class FootballDataPollingServiceImpl implements FootballDataPollingServic
 	public void schedulePredictionsEvaluation() {
 		final List<Prediction> unevaluatedPredictions = predictionRepository.findByPointsAndFixtureStatus(null, Status.FINISHED);
 		unevaluatedPredictions.forEach(predictionService::evaluatePrediction);
+		final List<Prediction> predictionsWithPostponedFixtures = predictionRepository.findByPointsAndFixtureStatus(null, Status.POSTPONED);
+		predictionsWithPostponedFixtures.forEach(prediction -> predictionService.evaluatePrediction(prediction, (short) 0));
 		
 		final List<Game> inProgressGames = gameRepository.findByGameStatus(GameStatus.IN_PROGRESS);
 		inProgressGames.forEach(gameService::tryEndGame);

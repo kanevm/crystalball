@@ -79,7 +79,11 @@
 						<c:set var="fixture" value="${prediction.fixture }" />
 						<tr>
 							<td>${fixture.homeTeamName } vs. ${fixture.awayTeamName }</td>
-							<td>${fixture.goalsHomeTeam }:${fixture.goalsAwayTeam }</td>
+							<td>
+								<c:if test="${not empty fixture.goalsHomeTeam and not empty fixture.goalsAwayTeam}">
+									${fixture.goalsHomeTeam }:${fixture.goalsAwayTeam }
+								</c:if>
+							</td>
 							<c:forEach items="${userPredictions}" var="userPredction">
 								<c:set var="user" value="${userPredction.key }" />
 								<c:set var="currentPrediction" value="${userPredction.value[counter.index] }" />

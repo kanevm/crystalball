@@ -20,12 +20,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	@Override
-	protected void configure(HttpSecurity http) throws Exception {
+	protected void configure(final HttpSecurity http) throws Exception {
 		http.authorizeRequests()
 				.antMatchers("/", "/resources/**").permitAll()
-		        .antMatchers("/users/**").hasAuthority("ADMIN")
-		        .antMatchers("/login*").anonymous()
-		        .antMatchers("/register*").anonymous()
+		        .antMatchers("/admin*").hasAuthority("ADMIN")
+		        .antMatchers("/login*", "/register*").anonymous()
 		        .anyRequest().fullyAuthenticated().and()
 	        .formLogin()
 		        .loginPage("/login")
@@ -36,14 +35,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.logout()
 				.logoutUrl("/logout")
 				.logoutSuccessUrl("/login?logout")
-				.deleteCookies("remember-me")
 				.permitAll().and()
 			.csrf()
 				.disable();
 	}
 
 	@Override
-	public void configure(AuthenticationManagerBuilder auth) throws Exception {
+	public void configure(final AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
 	}
 

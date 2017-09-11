@@ -75,8 +75,6 @@ public class FootballOperationsImpl implements FootballOperations {
 		final URI uriFrom = uriFrom(apiBaseUri, "/competitions/{id}/leagueTable", Collections.singletonMap("id", competitionId));
 		final ResponseEntity<LeagueTable> leagueTableResponseEntity = getRestTemplate().getForEntity(uriFrom, LeagueTable.class);
 
-		// leagueTableResponseEntity.getHeaders().forEach((x, y) -> System.out.println(x + ": " + y));
-		
 		return leagueTableResponseEntity.getBody();
 	}
 

@@ -11,6 +11,7 @@
 		<div class="col-md-6">
 			<a href="<c:url value="/game/start" />" class="btn btn-primary" role="button"><spring:message code="text.header.startGame" /></a>
 			<a href="<c:url value="/games" />" class="btn btn-primary" role="button"><spring:message code="text.header.games" /></a>
+			<a href="<c:url value="/games/stats" />" class="btn btn-primary" role="button"><spring:message code="text.header.gamesStats" /></a>
 		</div>
 		<div class="col-md-6">
 			<spring:message code="text.homepage.info" />
@@ -41,8 +42,8 @@
 								${fixture.homeTeamName } vs. ${fixture.awayTeamName }
 							</td>
 							<td>
+								<spring:message code="text.gamepage.fixture.status.${fixture.status}" />
 								<c:if test="${not empty fixture.goalsHomeTeam and not empty fixture.goalsAwayTeam}">
-									<spring:message code="text.gamepage.fixture.status.${fixture.status}" />
 									&nbsp;${fixture.goalsHomeTeam }:${fixture.goalsAwayTeam }
 								</c:if>
 							</td>

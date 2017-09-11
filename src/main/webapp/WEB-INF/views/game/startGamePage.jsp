@@ -39,7 +39,7 @@
 
 				<br>
 				
-				<input type="submit" class="btn btn-primary" value="Start game">
+				<input type="submit" class="btn btn-primary" value="<spring:message code="text.header.startGame" />">
 			</form:form>
 			
 		</div>
