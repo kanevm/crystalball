@@ -90,4 +90,15 @@ public class GameServiceImpl implements GameService {
 	public Game getGame(long id) {
 		return gameRepository.findOne(id);
 	}
+	
+	@Override
+	public List<Game> getGames() {
+		return gameRepository.findAll();
+	}
+	
+	@Override
+	public List<Game> getGamesForGameStatus(final GameStatus gameStatus) {
+		return gameRepository.findByGameStatus(gameStatus);
+	}
+	
 }

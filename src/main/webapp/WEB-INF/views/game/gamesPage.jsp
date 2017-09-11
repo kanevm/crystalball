@@ -66,5 +66,49 @@
 			</div>
 		</c:forEach>
 	</div>
-	
+	<c:if test="${not empty games }">
+		<h3><spring:message code="text.gamepage.stats" text="Stats"/></h3><hr>
+		<div class="row">
+			<div class="col-md-6">
+				<table class="table table-striped">
+				<thead>
+					<tr><th colspan="2"><spring:message code="text.gamepage.games" /></th></tr>
+					<tr>
+						<th><spring:message code="text.gamepage.games.status" /></th>
+						<th><spring:message code="text.gamepage.games.count" /></th>
+					</tr>
+				</thead>
+				<tbody>
+					<c:forEach items="${gamesCountForStatus}" var="gameCount">
+						<tr>
+							<td><spring:message code="text.gamepage.game.status.${gameCount.key}" /></td>
+							<td>${gameCount.value}</td>
+						</tr>
+					</c:forEach>
+				</tbody>
+				</table>
+			</div>
+			<div class="col-md-6">
+				<table class="table table-striped">
+				<thead>
+					<tr><th colspan="3"><spring:message code="text.gamepage.predictions" /></th></tr>
+					<tr>
+						<th><spring:message code="text.gamepage.predictions.points" /></th>
+						<th><spring:message code="text.gamepage.predictions.count" /></th>
+						<th><spring:message code="text.gamepage.predictions.percent"  /></th>
+					</tr>
+				</thead>
+				<tbody>
+					<c:forEach items="${predictionsCountForPoints}" var="predictionCount">
+						<tr>
+							<td>${predictionCount.key}</td>
+							<td>${predictionCount.value }</td>
+							<td><fmt:formatNumber type = "percent" value = "${(predictionCount.value / predictionsCount)}" /></td>
+						</tr>
+					</c:forEach>
+				</tbody>
+				</table>
+			</div>
+		</div>
+	</c:if>
 </template:page>

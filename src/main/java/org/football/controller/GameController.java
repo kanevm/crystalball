@@ -28,6 +28,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.validation.Valid;
 
@@ -38,6 +39,7 @@ import org.football.form.PredictionFormEntry;
 import org.football.persistance.competition.Competition;
 import org.football.persistance.fixture.Fixture;
 import org.football.persistance.game.Game;
+import org.football.persistance.game.GameStatus;
 import org.football.persistance.prediction.Prediction;
 import org.football.persistance.user.User;
 import org.football.repository.CompetitionRepository;
@@ -142,9 +144,23 @@ public class GameController extends AbstractController {
 	
 	@GetMapping(GAMES_URL)
 	public String getGamesPage(final Model model) {
-
-		model.addAttribute(GAMES_ATTR, gameService.getGamesForCurrentUser());
-
+		final List<Game> games = gameService.getGamesForCurrentUser();
+		model.addAttribute(GAMES_ATTR, games);
+		
+		final Map<GameStatus, Long> gamesCountForStatus = games.stream()
+				.collect(Collectors.groupingBy(Game::getGameStatus, Collectors.counting()));
+		model.addAttribute("gamesCountForStatus", gamesCountForStatus);
+		
+		final List<Prediction> predictions = games.stream()
+				.filter(game -> GameStatus.FINISHED == game.getGameStatus())
+				.flatMap(game -> game.getPredictions().stream())
+				.collect(Collectors.toList());
+		model.addAttribute("predictionsCount", predictions.size());
+		
+		final Map<Short, Long> predictionsCountForPoints = predictions.stream()
+				.collect(Collectors.groupingBy(Prediction::getPoints, Collectors.counting()));
+		model.addAttribute("predictionsCountForPoints", predictionsCountForPoints);
+		
 		return GamesPage;
 	}
 	
