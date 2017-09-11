@@ -1,4 +1,4 @@
-package org.football.restapi.service;
+package org.football.restapi.client;
 
 import java.util.List;
 

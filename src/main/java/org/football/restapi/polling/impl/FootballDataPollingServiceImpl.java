@@ -13,7 +13,7 @@ import org.football.repository.CompetitionRepository;
 import org.football.repository.GameRepository;
 import org.football.repository.PredictionRepository;
 import org.football.restapi.polling.FootballDataPollingService;
-import org.football.restapi.service.FootballOperations;
+import org.football.restapi.client.FootballOperations;
 import org.football.service.GameService;
 import org.football.service.PredictionService;
 import org.springframework.beans.factory.annotation.Autowired;

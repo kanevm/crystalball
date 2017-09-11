@@ -1,4 +1,4 @@
-package org.football.restapi.service.impl;
+package org.football.restapi.client.impl;
 
 import static org.football.restapi.util.UrlUtils.safeUrl;
 import static org.football.restapi.util.UrlUtils.uriFrom;
@@ -14,7 +14,7 @@ import org.football.persistance.fixture.Fixture;
 import org.football.persistance.fixture.FixtureWithH2H;
 import org.football.persistance.fixture.Fixtures;
 import org.football.persistance.leaguetable.LeagueTable;
-import org.football.restapi.service.FootballOperations;
+import org.football.restapi.client.FootballOperations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
