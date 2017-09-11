@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import org.football.persistance.game.Game;
@@ -36,6 +37,7 @@ public class User {
 	@Column(nullable = false)
 	private String name;
 
+	@OrderBy("startedTime DESC")
 	@ManyToMany(mappedBy = "users")
 	private List<Game> games = new ArrayList<>();
 
