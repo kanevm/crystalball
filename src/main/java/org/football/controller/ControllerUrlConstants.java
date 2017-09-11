@@ -2,6 +2,8 @@ package org.football.controller;
 
 public interface ControllerUrlConstants {
 
+	String ADMIN_URL = "/admin";
+	String USER_URL = "/user";
 	String GAME_URL = "/game";
 	String GAMES_URL = "/games";
 	String START_URL = "/start";

@@ -87,7 +87,7 @@ public class GameServiceImpl implements GameService {
 	}
 
 	@Override
-	public Game getGame(long id) {
+	public Game getGame(final long id) {
 		return gameRepository.findOne(id);
 	}
 	
@@ -101,4 +101,8 @@ public class GameServiceImpl implements GameService {
 		return gameRepository.findByGameStatus(gameStatus);
 	}
 	
+	@Override
+	public void deleteGame(final long id) {
+		gameRepository.delete(id);
+	}
 }

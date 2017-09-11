@@ -39,11 +39,14 @@
 				<ul class="dropdown-menu">
 					<li><a href="<c:url value="/game/start" />"><spring:message code="text.header.startGame" /></a></li>
 					<li><a href="<c:url value="/games" />"><spring:message code="text.header.games" /></a></li>
-					<li><a href="<c:url value="/games/stats" />"><spring:message code="text.header.gamesStats" /></a></li>
+					<li><a href="<c:url value="/games#stats" />"><spring:message code="text.header.gamesStats" /></a></li>
 					<li role="separator" class="divider"></li>
 					<li><a href="<c:url value="/logout" />"><spring:message code="text.header.logout" /></a></li>
 				</ul>
 			</li>
+			<c:if test="${currentUser.role == 'ADMIN'}">
+				<li><a href="<c:url value="/admin" />"><spring:message code="text.header.admin" /></a></li>
+			</c:if>
 		</c:if>
       </ul>
       <ul class="nav navbar-nav navbar-right">

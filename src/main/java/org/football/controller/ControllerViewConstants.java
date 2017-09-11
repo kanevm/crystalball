@@ -9,4 +9,5 @@ public interface ControllerViewConstants {
 	String HomePage = "homePage";
 	String LoginPage = "loginPage";
 	String RegisterPage = "registerPage";
+	String AdminPage = "adminPage";
 }

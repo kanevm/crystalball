@@ -3,6 +3,7 @@ package org.football.persistance.user;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -11,10 +12,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import org.football.persistance.game.Game;
+import org.football.persistance.prediction.Prediction;
 
 @Entity
 @Table(name = "users")
@@ -38,8 +41,16 @@ public class User {
 	private String name;
 
 	@OrderBy("startedTime DESC")
-	@ManyToMany(mappedBy = "users")
+	@ManyToMany(mappedBy = "users", cascade = {
+            CascadeType.DETACH,
+            CascadeType.MERGE,
+            CascadeType.REFRESH,
+            CascadeType.PERSIST
+    })
 	private List<Game> games = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "user", cascade = { CascadeType.ALL })
+	private List<Prediction> predictions = new ArrayList<>();
 
 	public String getEmail() {
 		return email;

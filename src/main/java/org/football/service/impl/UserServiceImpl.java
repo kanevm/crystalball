@@ -59,6 +59,11 @@ public class UserServiceImpl implements UserService {
 
 		return userRepository.save(user);
 	}
+	
+	@Override
+	public void deleteUser(final long id) {
+		userRepository.delete(id);
+	}
 
 	protected User convert(final RegisterForm form) {
 		final User user = new User();

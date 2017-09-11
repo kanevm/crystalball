@@ -11,7 +11,7 @@
 		<div class="col-md-6">
 			<a href="<c:url value="/game/start" />" class="btn btn-primary" role="button"><spring:message code="text.header.startGame" /></a>
 			<a href="<c:url value="/games" />" class="btn btn-primary" role="button"><spring:message code="text.header.games" /></a>
-			<a href="<c:url value="/games/stats" />" class="btn btn-primary" role="button"><spring:message code="text.header.gamesStats" /></a>
+			<a href="<c:url value="/games#stats" />" class="btn btn-primary" role="button"><spring:message code="text.header.gamesStats" /></a>
 		</div>
 		<div class="col-md-6">
 			<spring:message code="text.homepage.info" />

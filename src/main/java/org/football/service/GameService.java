@@ -25,4 +25,6 @@ public interface GameService {
 
 	List<Game> getGamesForGameStatus(GameStatus gameStatus);
 
+	void deleteGame(long id);
+
 }

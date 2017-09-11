@@ -12,6 +12,7 @@ import static org.football.controller.ControllerAttributeConstants.USER_POINTS_A
 import static org.football.controller.ControllerAttributeConstants.USER_PREDICTIONS_ATTR;
 import static org.football.controller.ControllerUrlConstants.GAMES_URL;
 import static org.football.controller.ControllerUrlConstants.GAME_URL;
+import static org.football.controller.ControllerUrlConstants.HOME_URL;
 import static org.football.controller.ControllerUrlConstants.PREDICT_GAME_URL;
 import static org.football.controller.ControllerUrlConstants.START_GAME_URL;
 import static org.football.controller.ControllerUrlConstants.SUMMARY_URL;
@@ -28,7 +29,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.validation.Valid;
 
@@ -91,6 +91,10 @@ public class GameController extends AbstractController {
 	@GetMapping(GAME_URL + "/{id}")
 	public String getGamePage(final Model model, @PathVariable final long id) {
 		final Game game = gameService.getGame(id);
+		if (!game.getUsers().contains(getCurrentUser())) {
+			return REDIRECT_PREFIX + HOME_URL;
+		}
+		
 		final Competition competition = competitionRepository.findOne(game.getCompetitionId());
 		final List<Fixture> fixtures = fixtureRepository.findByCompetitionIdAndMatchdayOrderByDate(game.getCompetitionId(), game.getCompetitionMatchday());
 		

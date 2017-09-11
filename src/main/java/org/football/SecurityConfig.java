@@ -1,5 +1,6 @@
 package org.football;
 
+import org.football.persistance.user.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +24,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(final HttpSecurity http) throws Exception {
 		http.authorizeRequests()
 				.antMatchers("/", "/resources/**").permitAll()
-		        .antMatchers("/admin*").hasAuthority("ADMIN")
+		        .antMatchers("/admin*").hasAuthority(Role.ADMIN.toString())
 		        .antMatchers("/login*", "/register*").anonymous()
 		        .anyRequest().fullyAuthenticated().and()
 	        .formLogin()

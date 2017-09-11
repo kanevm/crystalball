@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.football.form.RegisterForm;
+import org.football.persistance.user.Role;
 import org.football.persistance.user.User;
 import org.football.repository.CompetitionRepository;
 import org.football.repository.FixtureRepository;
@@ -85,6 +86,20 @@ public class App implements CommandLineRunner {
 			userService.create(form);
 			System.out.println("joro created");
 		}
+		
+		final Optional<User> admin = userService.getUserByEmail("admin@abv.bg");
+		if (!admin.isPresent()) {
+			final RegisterForm form = new RegisterForm();
+			form.setEmail("admin@abv.bg");
+			form.setName("Admin");
+			form.setPassword("123123");
+			form.setPasswordRepeated("123123");
+			form.setRole(Role.ADMIN);
+
+			userService.create(form);
+			System.out.println("admin created");
+		}
+		
 //		Random rand = new Random();
 //		final Competition competition = competitionRepository.findOne(452L);
 //		competition.getFixtures().forEach(fixture -> {
