@@ -7,15 +7,16 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.football.form.GameForm;
 import org.football.persistance.competition.Competition;
+import org.football.persistance.fixture.Fixture;
+import org.football.persistance.fixture.Status;
 import org.football.persistance.game.Game;
 import org.football.persistance.game.GameStatus;
 import org.football.persistance.game.GameType;
-import org.football.persistance.prediction.Prediction;
 import org.football.persistance.user.User;
 import org.football.repository.CompetitionRepository;
+import org.football.repository.FixtureRepository;
 import org.football.repository.GameRepository;
 import org.football.service.GameService;
 import org.football.service.UserService;
@@ -29,6 +30,8 @@ public class GameServiceImpl implements GameService {
 	private GameRepository gameRepository;
 	@Autowired
 	private CompetitionRepository competitionRepository;
+	@Autowired
+	private FixtureRepository fixtureRepository;
 	@Autowired
 	private UserService userService;
 
@@ -65,14 +68,15 @@ public class GameServiceImpl implements GameService {
 	
 	@Override
 	public Game tryEndGame(final Game game) {
-		final List<Prediction> predictions = game.getPredictions();
-		if (CollectionUtils.isNotEmpty(predictions) && predictions.stream()
-				.allMatch(prediction -> prediction.getPoints() != null)) {
+		final List<Fixture> fixtures = fixtureRepository
+				.findByCompetitionIdAndMatchdayOrderByDate(game.getCompetitionId(), game.getCompetitionMatchday());
+		if (fixtures.stream()
+				.allMatch(fixture -> Status.FINISHED == fixture.getStatus() || Status.POSTPONED == fixture.getStatus())) {
 			game.setGameStatus(GameStatus.FINISHED);
-			
+
 			return gameRepository.saveAndFlush(game);
 		}
-		
+
 		return game;
 	}
 
