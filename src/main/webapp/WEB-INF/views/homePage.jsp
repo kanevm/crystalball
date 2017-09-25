@@ -18,7 +18,9 @@
 		</div>
 	</div>
 	<div class="row">&nbsp;</div>
-	<c:forEach items="${competitions}" var="competition">
+	<c:forEach items="${competitions}" var="competitionCurrentFixtures">
+		<c:set var="competition" value="${competitionCurrentFixtures.key}" />
+		<c:set var="fixtures" value="${competitionCurrentFixtures.value}" />
 		<div class="row">
 			<div class="col-md-12">
 				<h4>${competition.caption}</h4><hr>
@@ -34,7 +36,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach items="${competition.fixtures}" var="fixture">
+						<c:forEach items="${fixtures}" var="fixture">
 						<tr>
 							<td><fmt:formatDate pattern="dd.MM HH:mm" value="${fixture.date}" /></td>
 							<td>${fixture.matchday}</td>

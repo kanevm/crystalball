@@ -108,14 +108,6 @@ public class Competition extends Resource {
 		this.lastUpdated = lastUpdated;
 	}
 
-	@Override
-	public String toString() {
-		return "Competition [id=" + id + ", caption=" + caption + ", league=" + league + ", year=" + year
-				+ ", currentMatchday=" + currentMatchday + ", numberOfMatchdays=" + numberOfMatchdays
-				+ ", numberOfTeams=" + numberOfTeams + ", numberOfGames=" + numberOfGames + ", lastUpdated="
-				+ lastUpdated + "]";
-	}
-
 	public List<Fixture> getFixtures() {
 		return fixtures;
 	}
@@ -130,5 +122,55 @@ public class Competition extends Resource {
 
 	public void setStandings(List<Standing> standings) {
 		this.standings = standings;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((caption == null) ? 0 : caption.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((league == null) ? 0 : league.hashCode());
+		result = prime * result + ((year == null) ? 0 : year.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		final Competition other = (Competition) obj;
+		if (caption == null) {
+			if (other.caption != null)
+				return false;
+		} else if (!caption.equals(other.caption))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (league == null) {
+			if (other.league != null)
+				return false;
+		} else if (!league.equals(other.league))
+			return false;
+		if (year == null) {
+			if (other.year != null)
+				return false;
+		} else if (!year.equals(other.year))
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Competition [id=" + id + ", caption=" + caption + ", league=" + league + ", year=" + year
+				+ ", currentMatchday=" + currentMatchday + ", numberOfMatchdays=" + numberOfMatchdays
+				+ ", numberOfTeams=" + numberOfTeams + ", numberOfGames=" + numberOfGames + "]";
 	}
 }
