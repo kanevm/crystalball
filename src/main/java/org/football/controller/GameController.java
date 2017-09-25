@@ -158,6 +158,7 @@ public class GameController extends AbstractController {
 		final List<Prediction> predictions = games.stream()
 				.filter(game -> GameStatus.FINISHED == game.getGameStatus())
 				.flatMap(game -> game.getPredictions().stream())
+				.filter(prediction -> prediction.getUser().equals(getCurrentUser()))
 				.collect(Collectors.toList());
 		model.addAttribute("predictionsCount", predictions.size());
 		
