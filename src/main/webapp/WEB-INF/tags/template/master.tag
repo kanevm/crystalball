@@ -26,6 +26,7 @@
 </c:forEach>
 
 <%-- Favourite Icon --%>
+<link rel="shortcut icon" type="image/x-icon" media="all" href="/resources/custom/images/favicon.ico" />
 
 <%-- CSS Files Are Loaded First as they can be downloaded in parallel --%>
 <template:styleSheets />

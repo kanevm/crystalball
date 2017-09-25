@@ -41,7 +41,16 @@
 							<td><fmt:formatDate pattern="dd.MM HH:mm" value="${fixture.date}" /></td>
 							<td>${fixture.matchday}</td>
 							<td>
-								${fixture.homeTeamName } vs. ${fixture.awayTeamName }
+								<c:set var="maxNumberChars" value="15" />
+								<c:set var="homeTeamName" value="${fixture.homeTeamName}" />
+								<c:set var="awayTeamName" value="${fixture.awayTeamName}" />
+								<c:if test="${fn:length(fixture.homeTeamName) gt maxNumberChars}">
+									<c:set var="homeTeamName" value="${fn:trim(fn:substring(fixture.homeTeamName, 0, maxNumberChars))}..." />
+								</c:if>
+								<c:if test="${fn:length(fixture.awayTeamName) gt maxNumberChars}">
+									<c:set var="awayTeamName" value="${fn:trim(fn:substring(fixture.awayTeamName, 0, maxNumberChars))}..." />
+								</c:if>
+								${homeTeamName} vs. ${awayTeamName }
 							</td>
 							<td>
 								<spring:message code="text.gamepage.fixture.status.${fixture.status}" />
