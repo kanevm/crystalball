@@ -44,11 +44,16 @@
 		<div class="col-md-6">
 			<table class="table table-striped">
 				<tbody>
-					<c:forEach items="${userPoints}" var="userPoint">
+					<c:forEach items="${userPoints}" var="userPoint" varStatus="counter">
 					<c:set var="user" value="${userPoint.key }" />
 					<c:set var="points" value="${userPoint.value }" />
 					<tr>
-						<td>${user.name} (${user.email})</td>
+						<td>
+							${user.name} (${user.email})
+							<c:if test="${counter.count == 1 and points != 0}">
+								&nbsp;-&nbsp;<spring:message code="text.gamepage.winner" />
+							</c:if>
+						</td>
 						<td><spring:message code="text.gamepage.points" arguments="${points}"/></td>
 					</tr>
 					</c:forEach>
@@ -83,11 +88,14 @@
 								<c:if test="${not empty fixture.goalsHomeTeam and not empty fixture.goalsAwayTeam}">
 									${fixture.goalsHomeTeam }:${fixture.goalsAwayTeam }
 								</c:if>
+								<c:if test="${empty fixture.goalsHomeTeam or empty fixture.goalsAwayTeam}">
+									<spring:message code="text.gamepage.fixture.status.${fixture.status}" />
+								</c:if>
 							</td>
 							<c:forEach items="${userPredictions}" var="userPredction">
 								<c:set var="user" value="${userPredction.key }" />
 								<c:set var="currentPrediction" value="${userPredction.value[counter.index] }" />
-								<td>${currentPrediction.goalsHomeTeam }:${currentPrediction.goalsAwayTeam } - ${currentPrediction.points} points</td>
+								<td>${currentPrediction.goalsHomeTeam }:${currentPrediction.goalsAwayTeam } - <spring:message code="text.gamepage.points" arguments="${currentPrediction.points == null ? 0 : currentPrediction.points}"/></td>
 							</c:forEach>
 						</tr>
 					</c:forEach>

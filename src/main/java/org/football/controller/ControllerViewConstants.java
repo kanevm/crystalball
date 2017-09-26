@@ -10,4 +10,5 @@ public interface ControllerViewConstants {
 	String LoginPage = "loginPage";
 	String RegisterPage = "registerPage";
 	String AdminPage = "adminPage";
+	String ErrorPage = "errorPage";
 }

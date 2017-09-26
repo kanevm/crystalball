@@ -94,9 +94,7 @@
 				</div>
 				<div class="row" style="position: absolute; bottom:20px;">
 					<div class="col-md-12">
-						<c:if test="${game.gameStatus == 'FINISHED'}">
-							<a href="<c:url value="/game/${game.id}/summary" />" class="btn btn-primary" role="button"><spring:message code="text.gamepage.displaySummary" /></a>&nbsp;
-						</c:if>
+						<a href="<c:url value="/game/${game.id}/summary" />" class="btn btn-primary" role="button"><spring:message code="text.adminpage.games.details" /></a>&nbsp;
 						<c:url var="deleteGameUrl" value="/admin/game" />
 						<form action="${deleteGameUrl}" method="POST" style="float:right; ">
 							<input type="hidden" name="id" value="${game.id}" /> 

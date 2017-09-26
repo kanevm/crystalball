@@ -1,15 +1,6 @@
 package org.football.controller;
 
-import static org.football.controller.ControllerAttributeConstants.COMPETITIONS_ATTR;
-import static org.football.controller.ControllerAttributeConstants.COMPETITION_ATTR;
-import static org.football.controller.ControllerAttributeConstants.FIXTURES_ATTR;
-import static org.football.controller.ControllerAttributeConstants.GAMES_ATTR;
-import static org.football.controller.ControllerAttributeConstants.GAME_ATTR;
-import static org.football.controller.ControllerAttributeConstants.GAME_FORM_ATTR;
-import static org.football.controller.ControllerAttributeConstants.PREDICTION_FORM_ATTR;
-import static org.football.controller.ControllerAttributeConstants.USERS_ATTR;
-import static org.football.controller.ControllerAttributeConstants.USER_POINTS_ATTR;
-import static org.football.controller.ControllerAttributeConstants.USER_PREDICTIONS_ATTR;
+import static org.football.controller.ControllerAttributeConstants.*;
 import static org.football.controller.ControllerUrlConstants.GAMES_URL;
 import static org.football.controller.ControllerUrlConstants.GAME_URL;
 import static org.football.controller.ControllerUrlConstants.HOME_URL;
@@ -119,7 +110,7 @@ public class GameController extends AbstractController {
 			
 			final Integer points = predictions.stream()
 					.map(Prediction::getPoints)
-					.mapToInt(x -> x)
+					.mapToInt(x -> x == null ? 0 : x)
 					.sum();
 			userPoints.put(user, points);
 		});
@@ -153,18 +144,18 @@ public class GameController extends AbstractController {
 		
 		final Map<GameStatus, Long> gamesCountForStatus = games.stream()
 				.collect(Collectors.groupingBy(Game::getGameStatus, Collectors.counting()));
-		model.addAttribute("gamesCountForStatus", gamesCountForStatus);
+		model.addAttribute(GAMES_COUNT_FOR_STATUS_ATTR, gamesCountForStatus);
 		
 		final List<Prediction> predictions = games.stream()
 				.filter(game -> GameStatus.FINISHED == game.getGameStatus())
 				.flatMap(game -> game.getPredictions().stream())
 				.filter(prediction -> prediction.getUser().equals(getCurrentUser()))
 				.collect(Collectors.toList());
-		model.addAttribute("predictionsCount", predictions.size());
+		model.addAttribute(PREDICTIONS_COUNT_ATTR, predictions.size());
 		
 		final Map<Short, Long> predictionsCountForPoints = predictions.stream()
 				.collect(Collectors.groupingBy(Prediction::getPoints, Collectors.counting()));
-		model.addAttribute("predictionsCountForPoints", predictionsCountForPoints);
+		model.addAttribute(PREDICTIONS_COUNT_FOR_POINTS_ATTR, predictionsCountForPoints);
 		
 		return GamesPage;
 	}
